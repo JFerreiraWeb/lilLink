@@ -20,7 +20,17 @@ class UsedShortLinkController extends Controller
 
     public function redirect($short_link)
     {
-        $shortLink = DB::table('list_short_url')->where('short_url', '=', $short_link);
+        //sanitize url
+
+        $url = filter_var($short_link, FILTER_SANITIZE_URL);
+
+        //check if we have a valid url
+        if (filter_var($url, FILTER_VALIDATE_URL) === false)
+        {
+            return redirect()->action([UsedShortLinkController::class, 'index'])->with('error', 'INVALID URL');
+        }
+
+        $shortLink = DB::table('list_short_url')->where('short_url', '=', $url);
         //check if we have a matching short_url
         if(!$shortLink->exists())
         {
@@ -52,6 +62,11 @@ class UsedShortLinkController extends Controller
     public function shorten(Request $request)
     {
 
+        $this->validate($request, [
+            'long_url' => 'required|active_url|string',
+            'url_description' => 'string|max:140'
+        ]);
+
         //get only short_urls that have not been used yet.
         $usedUrls = DB::table('list_short_url')
             ->select('*')
@@ -67,7 +82,7 @@ class UsedShortLinkController extends Controller
 
         //insert the used_short_url into the db.
         DB::table('used_short_url')->insert([
-           'long_url' => $request['long_url'],
+            'long_url' => $request['long_url'],
             'short_url_id' => $usedUrls->id,
             'description' => $request['url_description'],
             'visited_no' => 0,
