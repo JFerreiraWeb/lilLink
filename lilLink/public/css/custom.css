@@ -1,0 +1,31 @@
+#app.py-4 {
+    background: #eeeeee;
+}
+#app h1{
+    font-size:22pt;
+    font-weight: bold;
+    color:#555555;
+}
+#app h5.mb-1{
+    font-size: 18pt;
+    font-weight: normal;
+    text-decoration: underline;
+    color:#2979bc;
+}
+
+#app .list-group-item-action:hover{
+    background-color:#eeeeee;
+}
+
+#app p.app-regular {
+    font-size: 14pt;
+}
+
+#app .btn-primary {
+    background-color:#2979bc;
+    border-color:#2979bc;
+}
+#app .btn-primary:hover {
+    background-color: #3490dc;
+    border-color: #3490dc;
+}
